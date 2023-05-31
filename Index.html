@@ -115,7 +115,7 @@
         right: -100%;
         height: 100vh;
         width:35vh;
-        background: blue;
+        background: #0d6efd;
         transition:0.3s;
         display:;
       }
@@ -157,10 +157,10 @@
      <a href="" class="navbar-logo">Nazril abdillah</a>
      
      <div class="navbar-list fs-5">
-       <a href=""><i>home</i></a>
-       <a href=""><i>about</i></a>
-       <a href=""><i>project</i></a>
-       <a href=""><i>contact</i></a>
+       <a href="#home"><i>Home</i></a>
+       <a href="#about"><i>About</i></a>
+       <a href="#project"><i>Project</i></a>
+       <a href="#contact"><i>Contact</i></a>
      </div>
      <div class="navbar-extra">
        <a class="nn" href=""><i class="" data-feather="search"></i></a>
@@ -314,6 +314,12 @@ const navbar =document.querySelector(".navbar-list")
 menu.addEventListener("click",function(){
   navbar.classList.toggle("active")
 });
+document.addEventListener("click",function(e){
+  if(!menu.contains(e.target) && !navbar.contains(e.target)){
+    navbar.classList.remove("active")
+  }
+  
+})
   </script>
   </body>
 </html>
