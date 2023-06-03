@@ -15,6 +15,9 @@
   </head>
   <body id="home">
     <style>
+    .tombol-kirim{
+      position: relative;
+    }
  .navbar{
    display: flex;
    justify-content: space-between;
@@ -23,11 +26,11 @@
    border-bottom: 1px solid black;
    z-index: 999999;
    position: fixed;
-   width: 58vh;
+   
    
  }
  .fotoFrofil{
-   animation:foto 1s linear  ;
+   animation:foto 1s ease-out  ;
  }
  @keyframes foto{
    0%{
@@ -123,7 +126,7 @@
       .navbar-list {
         position:absolute;
         top: 100%;
-        right: -100%;
+        left: -100%;
         height: 100vh;
         width:35vh;
         background: #0d6efd;
@@ -131,7 +134,7 @@
         display:;
       }
       .navbar-list.active{
-        right:0%;
+        left:0%;
       }
       .navbar-list a{
         display: block;
@@ -147,11 +150,16 @@
       }
         #mnu{
           display: inline-block;
+          margin-left: 10px;
+        }
+        .navbar-extra{
+          margin-right: 2%;
         }
         .navbar-logo{
           font-size: 2.5rem;
-          margin-left: 5%;
+          margin-left: 2%;
         }
+        
       }
       /*--phone*/
       @media (max-width:458px){
@@ -164,7 +172,8 @@
       }
       
     </style>
-   <nav class="navbar fs-3" >
+   <nav class="navbar fs-3 col-12" >
+       <a class="nn" ><i id="mnu" data-feather="menu"></i></a>
      <a href="" class="navbar-logo">Nazril abdillah</a>
      
      <div class="navbar-list fs-5">
@@ -176,7 +185,7 @@
      <div class="navbar-extra">
        <a class="nn" href=""><i class="" data-feather="search"></i></a>
        <a class="nn" href=""><i data-feather="github"></i></a>
-       <a class="nn" ><i id="mnu" data-feather="menu"></i></a>
+     
      </div>
     
    </nav>
@@ -267,10 +276,14 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-8 ">
-         <form>
+         <div class="alert alert-success alert-dismissible fade show d-none" role="alert">
+  <strong>Terima Kasih!</strong> pesan anda sudah kami terima.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+         <form name="submit-to-google-sheet">
   <div class="mb-3">
     <label for="name" class="name">Nama Kamu</label>
-    <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="name">
+    <input onclick="hl()" type="name" class="form-control" id="exampleInputEmail1" aria-describedby="name" name="nama">
   </div>
 
   <div class="col-3">
@@ -278,14 +291,17 @@
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">email kamu</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input onclick="hl()" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
   </div>
   <div class="mb-3">
   <label for="exampleFormControlTextarea1" class="form-label">pesan</label>
-  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  <textarea onclick="hl()" class="form-control" id="exampleFormControlTextarea1" rows="3"   name="pesan"></textarea>
 </div>
-  
-  <button type="submit" class="btn btn-primary">kirim</button>
+<button class="tombol-kirim btn btn-primary" type="submit">kirim</button>
+<button class="tombol-loading btn btn-primary d-none" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
 </form> 
         </div>
       </div>
@@ -331,6 +347,33 @@ document.addEventListener("click",function(e){
   }
   
 })
+function hl(){
+ 
+}
+  </script>
+  <!--gsap-->
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzLz_iSKg46LrxloL7NHPmHyIpnnIGnlRlWabgTuQt5lUZT8v_rWVqa3um_LoJhFH18/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const btnKirim=document.querySelector(".tombol-kirim")
+  const btnLoad=document.querySelector(".tombol-loading")
+  const input =document.querySelectorAll(".form-control")
+  const alertp =document.querySelector(".alert")
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+        btnLoad.classList.toggle("d-none")
+        btnKirim.classList.toggle("d-none")
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        console.log('Success!', response)
+        form.reset()
+        btnLoad.classList.toggle("d-none")
+        alertp.classList.toggle("d-none")
+        btnKirim.classList.toggle("d-none")
+      })
+      .catch(error => p.text('Error!', error.message))
+  })
   </script>
   </body>
 </html>
